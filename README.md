@@ -5,6 +5,11 @@ A common work around to solve this problem is the blank report.  This collects a
 
 However, a more ideal solution would be for Smartsheet to "listen for" these blank lines and fill in the necessary formulas whenever a change occurs that creates a blank line.  This can be achieved by using the Smartsheet API webhook functionality to trigger a Google Cloud Function which can then find and fill the blank cells.  
 
+The basic concept:
+1. Each open project sheet has a webhook that listens for any change
+2. When a change is detected, an HTTP trigger is sent to the cloud functions URL
+3. The cloud function checks for any blank lines and writes formulas into any admin columns with blank cells
+
 ## Requirements
 * Google Cloud Account
 * Smartsheet Python SDK
@@ -12,4 +17,6 @@ However, a more ideal solution would be for Smartsheet to "listen for" these bla
 ## Goals/Proof of Concept
 - [x] Successfully establish a webhook between Smartsheet test sheet and Hello World Google Cloud Function
 - [x] Write a base case Google Cloud function that succesfully changes an existing sheet when manually triggered (create new column in test sheet)
-- [ ] Rewrite 
+- [ ] Create a base case where Smartsheet alerts Google Cloud function to a change in a single sheet and then Google Cloud Function creates a column in that single sheet (essentially combine the two steps above)
+- [ ] Rewrite admin_refresh.py to check for blank lines and find/update cells rather than brute force rewriting all the admin columns
+- [ ] Figure out how to get the webhook to tell the Cloud Function which sheet to run on.  Currently the base case has a single sheet ID hard coded in.  Needs to dynamically adjust to sheets to be useful.  
