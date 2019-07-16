@@ -19,10 +19,9 @@ The basic concept:
 - [x] Write a base case Google Cloud function that succesfully changes an existing sheet when manually triggered (create new column in test sheet)
 - [ ] Create a base case where Smartsheet alerts Google Cloud function to a change in a single sheet and then Google Cloud Function creates a column in that single sheet (essentially combine the two steps above)
 - [ ] Rewrite admin_refresh.py to check for blank lines and find/update cells rather than brute force rewriting all the admin columns
-- [ ] Figure out how to get the webhook to tell the Cloud Function which sheet to run on.  Currently the base case has a single sheet ID hard coded in.  Needs to dynamically adjust to sheets to be useful.  
-
+- [ ] Figure out how to get the webhook to tell the Cloud Function which sheet to run on (get the cloud function to alter the sheet it acts on based on the scopObjectID delivered by the webhook). 
 
 ## Useful References
-- [Google Cloud Functions Quick Start](https://cloud.google.com/functions/docs/writing/specifying-dependencies-python)
-- [Specifying Dependencies in Google Cloud Functions (what the requirements.txt is for aka. how you get the function to use the SDK](https://cloud.google.com/functions/docs/quickstart-console)
+- [Google Cloud Functions Quick Start](https://cloud.google.com/functions/docs/quickstart-console)
+- [Specifying Dependencies in Google Cloud Functions (what the requirements.txt is for aka. how you get the function to use the SDK](https://cloud.google.com/functions/docs/writing/specifying-dependencies-python)
 - [Smartsheet API Webhooks Reference](https://smartsheet-platform.github.io/api-docs/#webhooks-reference)
