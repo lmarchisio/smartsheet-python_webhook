@@ -1,5 +1,5 @@
 # smartsheet-python_webhook
-The goal of this work is to fix the occasional Smartsheet issue where users add data in a blank row that is between several other blank rows.  When this occurs Smartsheet not to Autofill is not triggered.  This creates a common problem where formulas (possibly hidden) that admins or other users rely on for data collection, or other back end work, do not get copied from rows above or below the new row.  
+The goal of this work is to fix the occasional Smartsheet issue where users add data in a blank row that is between several other blank rows.  When this occurs Smartsheet Autofill is not triggered.  This creates a common problem where formulas (possibly hidden) that admins or other users rely on for data collection, or other back end work, do not get copied from rows above or below the new row.  
 
 A common work around to solve this problem is the blank report.  This collects all lines where the cell that would normally have the required formula are blank.  When something shows up in the blank report, the admin knows the formula was not copied and can go correct the error.  
 
