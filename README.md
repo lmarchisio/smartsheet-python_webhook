@@ -25,4 +25,4 @@ The basic concept:
 ## Useful References
 - [Google Cloud Functions Quick Start](https://cloud.google.com/functions/docs/writing/specifying-dependencies-python)
 - [Specifying Dependencies in Google Cloud Functions (what the requirements.txt is for aka. how you get the function to use the SDK](https://cloud.google.com/functions/docs/quickstart-console)
-- [Smartsheet API Webhooks Reference](https://smartsheet-platform.github.io/api-docs/#webhooks-reference
+- [Smartsheet API Webhooks Reference](https://smartsheet-platform.github.io/api-docs/#webhooks-reference)
