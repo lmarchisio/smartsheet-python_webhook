@@ -32,7 +32,7 @@ The basic concept:
 - [x] Figure out how to get the webhook to tell the Cloud Function which sheet to run on (get the cloud function to alter the sheet it acts on based on the ```scopObjectID``` delivered by the webhook). 
 
 ## Prototyping
-- [x] Complete base usable case, update Approved? column with correct formua for all lines where Approved? and Item/Task Description are blank whenver sheet is changed
+- [x] Complete base usable case, update Approved? column with correct formua for all lines where Approved? and Item/Task Description are blank whenever sheet is changed
 - [ ] Complete next case which updates Approved? and a pair of department Start/Finish Columns (considered second stage gate b/c of nested loops in the original ```admin_refresh.py```) decide between writing a multi step function and creating additional webhooks and functions for each admin column
 - [ ] Complete next case which updates all columns based on previous stage decisions.  If all work is being done by a single function at this point, review run time using a copy of an existing large project sheet.  Currently, manually running ```admin_refresh.py``` on large projects takes approx 90 seconds.  
 
