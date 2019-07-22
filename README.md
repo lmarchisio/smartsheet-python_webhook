@@ -35,6 +35,10 @@ The basic concept:
 - [x] Complete base usable case, update Approved? column with correct formua for all lines where Approved? and Item/Task Description are blank whenever sheet is changed
 - [ ] Complete next case which updates Approved? and a pair of department Start/Finish Columns (considered second stage gate b/c of nested loops in the original ```admin_refresh.py```) decide between writing a multi step function and creating additional webhooks and functions for each admin column
 - [ ] Complete next case which updates all columns based on previous stage decisions.  If all work is being done by a single function at this point, review run time using a copy of an existing large project sheet.  Currently, manually running ```admin_refresh.py``` on large projects takes approx 90 seconds.  
+- [ ] Enable webhook/function on a few projects and monitor invocation rate
+- [ ] Scale to all active sheets
+- [ ] Update project close documentation to include deletion of webhooks
+- [ ] Update ```start_new_project.py``` to include the creation of webhooks (and possibly the enableing of webhooks)
 
 ## Useful References
 - [Google Cloud Functions Quick Start](https://cloud.google.com/functions/docs/quickstart-console)
