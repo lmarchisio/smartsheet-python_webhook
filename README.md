@@ -15,10 +15,11 @@ The basic concept:
 - [Smartsheet Python SDK](https://github.com/smartsheet-platform/smartsheet-python-sdk)
 
 ## Setup
-1. Create a new Google Cloud Function
+1. [Create a new Google Cloud Function using the Python runtime](https://cloud.google.com/functions/docs/quickstart-console)
 2. Copy ```main.py``` and ```requirements.txt``` to the source tab
-3. Create a webhook from the desired sheet to the cloud function URL
-4. Update the webhook to enabled = true
+3. Update the function to execute to smartsheet_webhook_responder, or change the function name in main.py to match whatever name you chose for the function
+4. Create a webhook from the desired sheet to the cloud function URL
+5. Update the webhook to enabled = true
 
 ## Proof of Concept
 - [x] Successfully establish a webhook between Smartsheet test sheet and Hello World Google Cloud Function
