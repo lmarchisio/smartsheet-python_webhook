@@ -26,6 +26,3 @@ Webhook = ss_client.Webhooks.create_webhook(
         'scopeObjectId': this_sheet,
         'events': ['*.*'],
         'version': 1}))
-
-# Finish it
-print('Done')
