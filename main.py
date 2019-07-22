@@ -23,7 +23,7 @@ def smartsheet_webhook_responder(request):
         return json.dumps({
             "smartsheetHookResponse": request_json['challenge']
         })
-    # if this is a callback, delete the test row
+    # if this is a callback
     elif request_json and 'scopeObjectId' in request_json:
         sheetid = request_json['scopeObjectId']
         sheet = ss_client.Sheets.get_sheet(
