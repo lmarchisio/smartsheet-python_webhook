@@ -48,6 +48,4 @@ def smartsheet_webhook_responder(request):
                 updated_row = ss_client.Sheets.update_rows(
                     sheetid,
                     [new_row])
-    else:
-        return 'too far!'
 
