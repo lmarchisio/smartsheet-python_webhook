@@ -11,7 +11,7 @@ The basic concept:
 3. The cloud function checks for any blank lines and writes formulas into any admin columns with blank cells
 
 ## Requirements
-- [Google Cloud Account](https://cloud.google.com/)
+- [Google Cloud Computing Account](https://cloud.google.com/)
 - [Smartsheet Python SDK](https://github.com/smartsheet-platform/smartsheet-python-sdk)
 
 ## Setup
