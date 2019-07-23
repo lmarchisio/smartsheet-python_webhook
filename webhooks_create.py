@@ -17,12 +17,17 @@ logging.basicConfig(filename='rwsheet.log', level=logging.INFO)
 print('To create webhook enter sheet ID')
 this_sheet = input()
 
+sheet = ss_client.Sheets.get_sheet(this_sheet)
+
 # create webhook
 Webhook = ss_client.Webhooks.create_webhook(
     smartsheet.models.Webhook({
-        'name': 'Webhook #4',
+        'name': 'Webhook_' + str(sheet.name),
         'callbackUrl': 'https://google-cloud-function-trigger',
         'scope': 'sheet',
-        'scopeObjectId': this_sheet,
+        'scopeObjectId': int(this_sheet),
         'events': ['*.*'],
         'version': 1}))
+
+# Finish it
+print('Webhook created: Webhook_' + str(sheet.name))
