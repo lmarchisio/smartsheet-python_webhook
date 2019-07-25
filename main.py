@@ -5,22 +5,30 @@ access_token = None
 ss_client = smartsheet.Smartsheet(access_token)
 
 column_map = {}
-rowsToUpdate = []
 
-# helper function to create row updates for Approved? column
-def make_approved(source_row):
-    # build new cell value
-    new_cell = ss_client.models.Cell()
-    new_cell.column_id = column_map['Approved?']
-    new_cell.formula = '=IF(OR([Supervisor Confirmed]@row = 1, [PM Override]@row = 1), 1, 0)'
-    new_cell.strict = False
+def get_cell_by_column_name(row, column_name):
+    column_id = column_map[column_name]
+    return row.get_column(column_id)
 
-    # build new row to update
-    new_row = ss_client.models.Row()
-    new_row.id = source_row.id
-    new_row.cells.append(new_cell)
+def evaluate_row_and_build_updates(source_row):
+    approved_cell = get_cell_by_column_name(source_row, "Approved?")
+    approved_value = approved_cell.display_value
+    if approved_value == None:
+        item_cell = get_cell_by_column_name(source_row, "Item or Task Description")
+        if item_cell.display_value != None:
+            # build new cell value
+            new_cell = ss_client.models.Cell()
+            new_cell.column_id = column_map["Approved?"]
+            new_cell.formula = '=IF(OR([Supervisor Confirmed]@row = 1, [PM Override]@row = 1), 1, 0)'
 
-    return new_row
+            # build the row to update
+            new_row = ss_client.models.Row()
+            new_row.id = source_row.id
+            new_row.cells.append(new_cell)
+
+            return new_row
+
+        return None
 
 def smartsheet_webhook_responder(request):
     """Responds to any HTTP request.
@@ -45,17 +53,15 @@ def smartsheet_webhook_responder(request):
         sheet = ss_client.Sheets.get_sheet(sheetid)
         for column in sheet.columns:
             column_map[column.title] = column.id
-        
+
+        rowsToUpdate = []
+
         for row in sheet.rows:
-            approved_cell = row.get_column(column_map['Approved?'])
-            approved_value = approved_cell.display_value
-            item_cell = row.get_column(column_map['Item or Task Description'])
-            item_value = item_cell.display_value
-            
-            if approved_value == None and item_value != None:
-                rowToUpdate = make_approved(row)
+            rowToUpdate = evaluate_row_and_build_updates(row)
+            if rowToUpdate is not None:
                 rowsToUpdate.append(rowToUpdate)
-               
-        updated_row = ss_client.Sheets.update_rows(
-        sheetid,
-        rowsToUpdate)
+
+        if rowsToUpdate != []:
+            result = ss_client.Sheets.update_rows(sheetid, rowsToUpdate)
+        else:
+            return None
