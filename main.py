@@ -10,16 +10,36 @@ def get_cell_by_column_name(row, column_name):
     column_id = column_map[column_name]
     return row.get_column(column_id)
 
-def evaluate_row_and_build_updates(source_row):
+def evaluate_and_make_approved(source_row):
     approved_cell = get_cell_by_column_name(source_row, "Approved?")
     approved_value = approved_cell.display_value
-    if approved_value == None:
+    if approved_value is None:
         item_cell = get_cell_by_column_name(source_row, "Item or Task Description")
-        if item_cell.display_value != None:
+        if item_cell.display_value is not None:
             # build new cell value
             new_cell = ss_client.models.Cell()
             new_cell.column_id = column_map["Approved?"]
             new_cell.formula = '=IF(OR([Supervisor Confirmed]@row = 1, [PM Override]@row = 1), 1, 0)'
+
+            # build the row to update
+            new_row = ss_client.models.Row()
+            new_row.id = source_row.id
+            new_row.cells.append(new_cell)
+
+            return new_row
+
+        return None
+
+def evaluate_and_make_cnc_start(source_row):
+    cnc_start = get_cell_by_column_name(source_row, "CNC Start")
+    cnc_start_value = cnc_start.display_value
+    if cnc_start_value is None:
+        item_cell = get_cell_by_column_name(source_row, "Item or Task Description")
+        if item_cell.display_value is not None:
+            # build new cell value
+            new_cell = ss_client.models.Cell()
+            new_cell.column_id = column_map["CNC Start"]
+            new_cell.formula = '=IF([Labor / Complete]@row = 0, IF([Dept.]@row = "CNC", Start@row))'
 
             # build the row to update
             new_row = ss_client.models.Row()
@@ -57,7 +77,7 @@ def smartsheet_webhook_responder(request):
         rowsToUpdate = []
 
         for row in sheet.rows:
-            rowToUpdate = evaluate_row_and_build_updates(row)
+            rowToUpdate = evaluate_and_make_approved(row)
             if rowToUpdate is not None:
                 rowsToUpdate.append(rowToUpdate)
 
@@ -65,3 +85,16 @@ def smartsheet_webhook_responder(request):
             result = ss_client.Sheets.update_rows(sheetid, rowsToUpdate)
         else:
             return None
+
+        rowsToUpdate = []
+
+        for row in sheet.rows:
+          rowToUpdate = evaluate_and_make_cnc_start(row)
+          if rowToUpdate is not None:
+            rowsToUpdate.append(rowToUpdate)
+
+        if rowsToUpdate != []:
+          result = ss_client.Sheets.update_rows(sheetid, rowsToUpdate)
+        else:
+          return None
+          
