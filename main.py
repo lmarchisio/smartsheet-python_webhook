@@ -72,22 +72,19 @@ def smartsheet_webhook_responder(request):
 
         rowsToUpdate = [row for row in sheet.rows if get_cell_by_column_name(row, "Approved?").display_value is None and get_cell_by_column_name(row, "Item or Task Description").display_value is not None]
 
-        if rowsToUpdate == []:
-          return None
-        else:
-          writeRows = []
+        if rowsToUpdate != []:
+          writeRows1 = []
           for row in rowsToUpdate:
-            write_row = make_approved(row)
-            writeRows.append(write_row)
-          result = ss_client.Sheets.update_rows(sheetid, writeRows)
-        
-        if rowsToUpdate == []:
-          return None
-        else:
+            write_row1 = make_approved(row)
+            writeRows1.append(write_row1)
+
+          result = ss_client.Sheets.update_rows(sheetid, writeRows1)
+
           for department in departments:
-            writeRows = []
+            writeRows2 = []
             for row in rowsToUpdate:
-              write_row = make_cncstart(row, department)
-              writeRows.append(write_row)
-            result = ss_client.Sheets.update_rows(sheetid, writeRows)
+              write_row2 = make_cncstart(row, department)
+              writeRows2.append(write_row2)
+              
+            result = ss_client.Sheets.update_rows(sheetid, writeRows2)
 
