@@ -5,6 +5,7 @@ access_token = None
 ss_client = smartsheet.Smartsheet(access_token)
 
 column_map = {}
+departments = ["CNC", "Design"]
 
 def get_cell_by_column_name(row, column_name):
     column_id = column_map[column_name]
@@ -23,10 +24,21 @@ def make_approved(source_row):
 
   return new_row
 
-def make_cncstart(source_row):
+def make_cncstart(source_row, source_dept):
   new_cell = ss_client.models.Cell()
-  new_cell.column_id = column_map["CNC Start"]
-  new_cell.formula = '=IF([Labor / Complete]@row = 0, IF([Dept.]@row = "CNC", Start@row))'
+  new_cell.column_id = column_map[source_dept + " Start"]
+  new_cell.formula = '=IF([Labor / Complete]@row = 0, IF([Dept.]@row = "' + source_dept + '", Start@row))'
+
+  new_row = ss_client.models.Row()
+  new_row.id = source_row.id
+  new_row.cells.append(new_cell)
+
+  return new_row
+
+def make_cncfinish(source_row):
+  new_cell = ss_client.models.Cell()
+  new_cell.column_id = column_map["CNC Finish"]
+  new_cell.formula = '=IF([Labor / Complete]@row = 0, IF([Dept.]@row = "CNC", Finish@row))'
 
   new_row = ss_client.models.Row()
   new_row.id = source_row.id
@@ -58,15 +70,7 @@ def smartsheet_webhook_responder(request):
         for column in sheet.columns:
           column_map[column.title] = column.id
 
-        rowsToUpdate = []
-
-        for row in sheet.rows:
-          approved_cell = get_cell_by_column_name(row, "Approved?")
-          approved_value = approved_cell.display_value
-          if approved_value is None:
-            item_cell = get_cell_by_column_name(row, "Item or Task Description")
-            if item_cell.display_value is not None:
-              rowsToUpdate.append(row)
+        rowsToUpdate = [row for row in sheet.rows if get_cell_by_column_name(row, "Approved?").display_value is None and get_cell_by_column_name(row, "Item or Task Description").display_value is not None]
 
         if rowsToUpdate == []:
           return None
@@ -80,8 +84,10 @@ def smartsheet_webhook_responder(request):
         if rowsToUpdate == []:
           return None
         else:
-          writeRows = []
-          for row in rowsToUpdate:
-            write_row = make_cncstart(row)
-            writeRows.append(write_row)
-          result = ss_client.Sheets.update_rows(sheetid, writeRows)
+          for department in departments:
+            writeRows = []
+            for row in rowsToUpdate:
+              write_row = make_cncstart(row, department)
+              writeRows.append(write_row)
+            result = ss_client.Sheets.update_rows(sheetid, writeRows)
+
