@@ -19,7 +19,7 @@ The basic concept:
 2. Copy ```main.py``` and ```requirements.txt``` to the source tab
 3. In the **function to execute** field change *hello_world* to *smartsheet_webhook_responder*, or change the function name in ```main.py``` to *hello_world* (exact names are actually irrelevant as long as the **function to execute** field matches the function name in ```main.py```
 4. Create a webhook from the desired sheet to the cloud function URL
-5. Update the webhook to ```enabled = true```
+5. Update the webhook to enabled = true
 
 ## Troubleshooting
 - ```webhooks_list.py``` lists all webhooks to find those that are not enabeled or NOT_VERIFIED
