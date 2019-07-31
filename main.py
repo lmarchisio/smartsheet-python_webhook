@@ -24,7 +24,7 @@ def make_approved(source_row):
 
   return new_row
 
-def make_cncstart(source_row, source_dept):
+def make_start(source_row, source_dept):
   new_cell = ss_client.models.Cell()
   new_cell.column_id = column_map[source_dept + " Start"]
   new_cell.formula = '=IF([Labor / Complete]@row = 0, IF([Dept.]@row = "' + source_dept + '", Start@row))'
@@ -35,10 +35,10 @@ def make_cncstart(source_row, source_dept):
 
   return new_row
 
-def make_cncfinish(source_row):
+def make_finish(source_row, source_dept):
   new_cell = ss_client.models.Cell()
-  new_cell.column_id = column_map["CNC Finish"]
-  new_cell.formula = '=IF([Labor / Complete]@row = 0, IF([Dept.]@row = "CNC", Finish@row))'
+  new_cell.column_id = column_map[source_dept + " Finish"]
+  new_cell.formula = '=IF([Labor / Complete]@row = 0, IF([Dept.]@row = "' + source_dept + '", Finish@row))'
 
   new_row = ss_client.models.Row()
   new_row.id = source_row.id
@@ -73,18 +73,29 @@ def smartsheet_webhook_responder(request):
         rowsToUpdate = [row for row in sheet.rows if get_cell_by_column_name(row, "Approved?").display_value is None and get_cell_by_column_name(row, "Item or Task Description").display_value is not None]
 
         if rowsToUpdate != []:
-          writeRows1 = []
+          writeRows = []
           for row in rowsToUpdate:
-            write_row1 = make_approved(row)
-            writeRows1.append(write_row1)
+            write_row = make_approved(row)
+            writeRows.append(write_row)
 
-          result = ss_client.Sheets.update_rows(sheetid, writeRows1)
+          result = ss_client.Sheets.update_rows(sheetid, writeRows)
 
           for department in departments:
-            writeRows2 = []
+            writeRows = []
             for row in rowsToUpdate:
-              write_row2 = make_cncstart(row, department)
-              writeRows2.append(write_row2)
-              
-            result = ss_client.Sheets.update_rows(sheetid, writeRows2)
+              write_row = make_start(row, department)
+              writeRows.append(write_row)
+
+            result = ss_client.Sheets.update_rows(sheetid, writeRows)
+
+          for department in departments:
+            writeRows = []
+            for row in rowsToUpdate:
+              write_row = make_finish(row, department)
+              writeRows.append(write_row)
+
+            result = ss_client.Sheets.update_rows(sheetid, writeRows)
+
+        else:
+          return None
 
