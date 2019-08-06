@@ -5,7 +5,7 @@ access_token = None
 ss_client = smartsheet.Smartsheet(access_token)
 
 column_map = {}
-departments = ["CNC", "Design"]
+departments = ["CNC", "Design", "Fab", "Install", "Metal", "Paint", "Sculpt", "Shipping"]
 
 def get_cell_by_column_name(row, column_name):
     column_id = column_map[column_name]
@@ -98,4 +98,3 @@ def smartsheet_webhook_responder(request):
 
         else:
           return None
-
