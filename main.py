@@ -67,6 +67,18 @@ def smartsheet_webhook_responder(request):
     elif request_json and 'scopeObjectId' in request_json:
         sheetid = request_json['scopeObjectId']
         sheet = ss_client.Sheets.get_sheet(sheetid)
+        
+        row_a = ss_client.models.Row()
+        row_a.to_top = True
+        row_a.cells.append({
+            'column_id': 6413332329588612,
+            'value': str(sheetid)
+        })
+        
+        response = ss_client.Sheets.add_rows(
+            5111763491415940,
+            [row_a])
+        
         for column in sheet.columns:
           column_map[column.title] = column.id
 
