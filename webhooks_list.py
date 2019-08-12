@@ -1,7 +1,6 @@
 import smartsheet
 import logging
 import json
-import pprint
 
 # list webhooks
 
