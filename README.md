@@ -38,7 +38,7 @@ The basic concept:
 - [x] Enable webhook/function on a few projects and monitor invocation rate
 
 ## Deployment
-- [ ] Scale to all active sheets
+- [x] Deploy to all active sheets
 - [ ] Update project close documentation to include deletion of webhooks
 - [ ] Update ```start_new_project.py``` to include the creation of webhooks (and possibly the enableing of webhooks)
 - [ ] Add monitoring of cloud function invocation rate to Smartsheet manual (daily task)
