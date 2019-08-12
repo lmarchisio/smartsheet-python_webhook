@@ -1,7 +1,6 @@
 import smartsheet
 import logging
 import json
-import pprint
 
 # list webhooks
 
@@ -21,10 +20,14 @@ IndexResult = smart.Webhooks.list_webhooks(
     include_all=False)
 
 a = json.loads(str(IndexResult))
+b = a.get('data', 0)
 
-pprint.pprint(a.get('data', 0))
+for n in range(len(b)):
+    c = b[n]
+    print(str(c['status']) + ': ' + str(c['id']) + ': ' + str(c['name']))
+    
+print(len(b))
 
-# uncomment below to also print 'results' data
+# uncomment below to also print all data
 # pprint.pprint(a)
-
 
