@@ -39,9 +39,9 @@ The basic concept:
 
 ## Deployment
 - [x] Deploy to all active sheets
-- [ ] Update project close documentation to include deletion of webhooks
-- [ ] Update ```start_new_project.py``` to include the creation of webhooks (and possibly the enableing of webhooks)
-- [ ] Add monitoring of cloud function invocation rate to Smartsheet manual (daily task)
+- [x] Update project close documentation to include deletion of webhooks
+- [x] Update ```start_new_project.py``` to include the creation of webhooks (and possibly the enableing of webhooks)
+- [x] Add monitoring of cloud function invocation rate to Smartsheet manual (daily task)
 
 ## Useful References
 - [Google Cloud Functions Quick Start](https://cloud.google.com/functions/docs/quickstart-console)
