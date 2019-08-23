@@ -21,7 +21,7 @@ Note that lines 73-90 in main.py are used to capture each webhook callback and s
 2. Upload the spreadsheet ```Webhook Log.xls``` to Smartsheet
 3. Copy ```main.py``` and ```requirements.txt``` to the source tab
 4. In the **function to execute** field change *hello_world* to *smartsheet_webhook_responder*, or change the function name in ```main.py``` to *hello_world* (exact names are actually irrelevant as long as the **function to execute** field matches the function name in ```main.py```
-5. Change the sheet id and column ids in lines 73-90 to match up with corresponding IDs from the newly uploaded Webhook Log
+5. Change the sheet ID and column IDs in lines 73-90 to match up with corresponding IDs from the newly uploaded Webhook Log
 6. Create a webhook from the desired sheet to the cloud function trigger URL
 7. Update the webhook to enabled = true
 8. Adjust Google Function memory allocation and timeout as needed
