@@ -37,11 +37,11 @@ Google Cloud Computing resource use metrics, billing data and log files from Clo
 
 ## Example Dasboard Reports
 
-# Usage and Cost Bar Chart
+### Usage and Cost Bar Chart
 
-# Projected Billing Table
+### Projected Billing Table
 
-# Log Files Counter
+### Log Files Counter
 
 ## Troubleshooting
 - ```webhooks_list.py``` lists all webhooks to find those that are not enabeled or NOT_VERIFIED
