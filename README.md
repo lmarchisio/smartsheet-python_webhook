@@ -26,6 +26,23 @@ Note that lines 73-90 in main.py are used to capture each webhook callback and s
 7. Update the webhook to enabled = true
 8. Adjust Google Function memory allocation and timeout as needed
 
+## Dashboard
+Google Cloud Computing resource use metrics, billing data and log files from Cloud Functions may be exported to BigQuery for importation as data sources in Google Data Studio reports.  Data Studio reports can then be embedded in Smartsheet Dashboards to allow simultaneous monitoring of Smartsheet and Google Cloud metrics.  
+
+1. [Export Google billing data to BigQuery] (https://cloud.google.com/billing/docs/how-to/export-data-bigquery)
+2. [Export log files to BigQuery] (https://cloud.google.com/logging/docs/export/configure_export_v2)
+3. [Connect Data Studio to BigQuery data sources] (https://cloud.google.com/bigquery/docs/visualize-data-studio)
+4. Create charts and reports
+5. Embed reports in Smartsheet dashboard using a web content widget
+
+## Example Dasboard Reports
+
+### Usage and Cost Bar Chart
+
+### Projected Billing Table
+
+### Log Files Counter
+
 ## Troubleshooting
 - ```webhooks_list.py``` lists all webhooks to find those that are not enabeled or NOT_VERIFIED
 
