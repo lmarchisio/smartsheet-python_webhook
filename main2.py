@@ -73,3 +73,8 @@ def update_pm(request):
             pm_rows = []
             for row in rowsToUpdate:
                 write_row = make_pm(row, the_pm)
+                pm_rows.append(write_row)
+
+            result = smart.Sheets.update_rows(sheetid, pm_rows)
+
+
