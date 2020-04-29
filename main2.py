@@ -1,7 +1,7 @@
 import smartsheet
 import json
 
-access_token = "220ffzx76tkl1pm66ezzcboqfw"
+access_token = None
 column_map = {}
 status_columns = {}
 smart = smartsheet.Smartsheet(access_token)
