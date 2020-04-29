@@ -21,16 +21,16 @@ def make_approved(source_row):
     new_row.cells.append(new_cell)
     return new_row
 
-def make_pm(source_row, pm):
-    new_cell = smartsheet.models.Cell()
-    new_cell.column_id = column_map["PM"]
-    new_cell.value = pm
+#def make_pm(source_row, pm):
+#    new_cell = smartsheet.models.Cell()
+#    new_cell.column_id = column_map["PM"]
+#    new_cell.value = pm
 
-    new_row = smartsheet.models.Row()
-    new_row.id = source_row.id
-    new_row.cells.append(new_cell)
+#    new_row = smartsheet.models.Row()
+#    new_row.id = source_row.id
+#    new_row.cells.append(new_cell)
 
-    return new_row
+#    return new_row
 
 def make_start(source_row, source_dept):
     new_cell = smartsheet.models.Cell()
@@ -80,21 +80,23 @@ def smartsheet_webhook_responder(request):
 
         rowsToUpdate = [row for row in sheet.rows if get_cell_by_column_name(row, "Approved?").display_value is None and get_cell_by_column_name(row, "Item or Task Description").display_value is not None]
         
-        row_map = {}
-        for row in sheet.rows:
-            row_map[row.row_number] = row
+#        row_map = {}
+#        for row in sheet.rows:
+#            row_map[row.row_number] = row
         
-        pm_cell = get_cell_by_column_name(row_map[1], 'PM')
+        # updating pm done here because it gums things up if executed below and because contact columns don't copy down like functions
+#        pm_cell = get_cell_by_column_name(row_map[1], 'PM')
         
-        pm_rows = []
-        for row in sheet.rows:
-            if get_cell_by_column_name(row, 'PM').value is None:
-                pm_rows.append(make_pm(row, pm_cell.value))
+#        pm_rows = []
+#        for row in sheet.rows:
+#            if get_cell_by_column_name(row, 'PM').value is None:
+#                pm_rows.append(make_pm(row, pm_cell.value))
         
-        updated_row = ss_client.Sheets.update_rows(
-            sheet.id,
-            pm_rows)
+#        updated_row = ss_client.Sheets.update_rows(
+#            sheet.id,
+#            pm_rows)
 
+        # keep these as loops run on rowsToUpdate, running as individual test-then-write loops uses excess memory or time
         if rowsToUpdate != []:
             writeRows = []
             for row in rowsToUpdate:
@@ -103,21 +105,17 @@ def smartsheet_webhook_responder(request):
 
             result = ss_client.Sheets.update_rows(sheetid, writeRows)
 
-            for department in departments:
-                writeRows = []
-                for row in rowsToUpdate:
-                    write_row = make_start(row, department)
-                    writeRows.append(write_row)
+            if sheetid != 6507095957759876:
+                for department in departments:
+                    writeRows = []
+                    for row in rowsToUpdate:
+                        write_row = make_start(row, department)
+                        writeRows.append(write_row)
 
-                result = ss_client.Sheets.update_rows(sheetid, writeRows)
+                    result = ss_client.Sheets.update_rows(sheetid, writeRows)
 
-            for department in departments:
-                writeRows = []
-                for row in rowsToUpdate:
-                    write_row = make_finish(row, department)
-                    writeRows.append(write_row)
-
-                result = ss_client.Sheets.update_rows(sheetid, writeRows)
-
-        else:
-            return None
+                for department in departments:
+                    writeRows = []
+                    for row in rowsToUpdate:
+                        write_row = make_finish(row, department)
+                        writeRows.append(write_row)
